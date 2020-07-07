@@ -1,4 +1,4 @@
-package astoppello.spingframework.petclinic;
+package astoppello.springframework.petclinic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
