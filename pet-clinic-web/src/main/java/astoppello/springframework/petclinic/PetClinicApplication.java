@@ -1,4 +1,4 @@
-package astoppello.spingframework.petclinic;
+package astoppello.springframework.petclinic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

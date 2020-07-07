@@ -1,4 +1,4 @@
-package astoppello.spingframework.petclinic.model;
+package astoppello.springframework.petclinic.model;
 
 import java.time.LocalDate;
 
