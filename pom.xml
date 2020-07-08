@@ -42,7 +42,7 @@
     </build>
 
     <scm>
-        <developerConnection>scm:https://github.com/Americo91/pet-clinic.git</developerConnection>
+        <developerConnection>scm:git@github.com:Americo91/pet-clinic.git</developerConnection>
         <tag>0.0.2</tag>
     </scm>
 
