@@ -9,7 +9,7 @@
     </parent>
     <groupId>astoppello.spingframework</groupId>
     <artifactId>pet-clinic</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>pet-clinic</name>
     <description>Pet Clinic Spring Boot</description>
 
