@@ -1,14 +1,14 @@
 package astoppello.springframework.petclinic.services.map;
 
 import astoppello.springframework.petclinic.model.Vet;
-import astoppello.springframework.petclinic.services.CrudService;
+import astoppello.springframework.petclinic.services.VetService;
 
 import java.util.Set;
 
 /**
  * Created by americo stoppello on 09/07/2020
  */
-public class VetServiceMap extends AbstractMapService<Vet, Long> implements CrudService<Vet,Long> {
+public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
 
     @Override
     public Vet findById(Long id) {

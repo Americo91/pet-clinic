@@ -1,14 +1,14 @@
 package astoppello.springframework.petclinic.services.map;
 
 import astoppello.springframework.petclinic.model.Owner;
-import astoppello.springframework.petclinic.services.CrudService;
+import astoppello.springframework.petclinic.services.OwnerService;
 
 import java.util.Set;
 
 /**
  * Created by americo stoppello on 09/07/2020
  */
-public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements CrudService<Owner, Long> {
+public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
 
     @Override
     public Owner findById(Long id) {
@@ -33,5 +33,11 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
     @Override
     public void delete(Owner owner) {
         super.delete(owner);
+    }
+
+    @Override
+    public Owner findByLastName(String lastName) {
+        //TODO finish this
+        return null;
     }
 }
