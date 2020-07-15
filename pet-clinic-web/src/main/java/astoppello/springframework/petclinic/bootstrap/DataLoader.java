@@ -1,6 +1,7 @@
 package astoppello.springframework.petclinic.bootstrap;
 
 import astoppello.springframework.petclinic.model.Owner;
+import astoppello.springframework.petclinic.model.Pet;
 import astoppello.springframework.petclinic.model.PetType;
 import astoppello.springframework.petclinic.model.Vet;
 import astoppello.springframework.petclinic.services.OwnerService;
@@ -8,6 +9,8 @@ import astoppello.springframework.petclinic.services.PetTypeService;
 import astoppello.springframework.petclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 /**
  * Created by americo stoppello on 12/07/2020
@@ -28,23 +31,44 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        PetType dog = new PetType();
-        dog.setName("Dog");
-        petTypeService.save(dog);
+        PetType dogType = new PetType();
+        dogType.setName("Dog");
+        PetType savedDog = petTypeService.save(dogType);
 
-        PetType cat = new PetType();
-        dog.setName("Cat");
-        petTypeService.save(cat);
+        PetType catType = new PetType();
+        dogType.setName("Cat");
+        PetType savedCat = petTypeService.save(catType);
 
         Owner owner1 = new Owner();
         owner1.setFirstName("Michele");
         owner1.setLastName("Weston");
+        owner1.setAddress("19 rue bricka");
+        owner1.setCity("Juan les pins");
+        owner1.setPhone("062113791");
+
+        Pet mikesPet = new Pet();
+        mikesPet.setPetType(savedDog);
+        mikesPet.setOwner(owner1);
+        mikesPet.setName("Doggo");
+        mikesPet.setBirthDate(LocalDate.now());
+        owner1.getPets().add(mikesPet);
 
         ownerService.save(owner1);
+
 
         Owner owner2 = new Owner();
         owner2.setFirstName("Fiona");
         owner2.setLastName("Gleanne");
+        owner2.setAddress("xxv aprile");
+        owner2.setCity("castel madama");
+        owner2.setPhone("0774448198");
+
+        Pet cat = new Pet();
+        cat.setBirthDate(LocalDate.now());
+        cat.setName("Gatto");
+        cat.setOwner(owner2);
+        cat.setPetType(savedCat);
+        owner2.getPets().add(cat);
 
         ownerService.save(owner2);
 
