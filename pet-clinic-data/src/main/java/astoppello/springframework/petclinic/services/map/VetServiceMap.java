@@ -1,8 +1,11 @@
 package astoppello.springframework.petclinic.services.map;
 
+import astoppello.springframework.petclinic.model.Speciality;
 import astoppello.springframework.petclinic.model.Vet;
+import astoppello.springframework.petclinic.services.SpecialityService;
 import astoppello.springframework.petclinic.services.VetService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Set;
 
@@ -12,6 +15,12 @@ import java.util.Set;
 @Service
 public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
 
+    private final SpecialityService specialityService;
+
+    public VetServiceMap(SpecialityService specialityService) {
+        this.specialityService = specialityService;
+    }
+
     @Override
     public Vet findById(Long id) {
         return super.findById(id);
@@ -19,6 +28,14 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetS
 
     @Override
     public Vet save(Vet vet) {
+        if (!CollectionUtils.isEmpty(vet.getSpecialities())) {
+            vet.getSpecialities().forEach(speciality -> {
+                if (speciality.getId() == null) {
+                    Speciality savedSpeciality = specialityService.save(speciality);
+                    speciality.setId(savedSpeciality.getId());
+                }
+            });
+        }
         return super.save(vet);
     }
 
