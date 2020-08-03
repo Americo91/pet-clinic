@@ -2,6 +2,8 @@ package astoppello.springframework.petclinic.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by americo stoppello on 07/07/2020
@@ -23,6 +25,9 @@ public class Pet extends BaseEntity{
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
+    private Set<Visit> visitSet = new HashSet<>();
 
     public PetType getPetType() {
         return petType;
@@ -54,5 +59,13 @@ public class Pet extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Visit> getVisitSet() {
+        return visitSet;
+    }
+
+    public void setVisitSet(Set<Visit> visitSet) {
+        this.visitSet = visitSet;
     }
 }
