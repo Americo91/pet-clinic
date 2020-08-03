@@ -1,10 +1,7 @@
 package astoppello.springframework.petclinic.bootstrap;
 
 import astoppello.springframework.petclinic.model.*;
-import astoppello.springframework.petclinic.services.OwnerService;
-import astoppello.springframework.petclinic.services.PetTypeService;
-import astoppello.springframework.petclinic.services.SpecialityService;
-import astoppello.springframework.petclinic.services.VetService;
+import astoppello.springframework.petclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -21,13 +18,15 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialityService specialityService;
+    private final VisitService visitService;
 
     public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService,
-                      SpecialityService specialityService) {
+                      SpecialityService specialityService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialityService = specialityService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -81,6 +80,13 @@ public class DataLoader implements CommandLineRunner {
         owner2.getPets().add(cat);
 
         ownerService.save(owner2);
+
+        Visit catVisit = new Visit();
+        catVisit.setPet(cat);
+        catVisit.setDate(LocalDate.now());
+        catVisit.setDescription("Kitty");
+        visitService.save(catVisit);
+
         System.out.println("Loading Owners...");
 
         Speciality radiology = new Speciality();
