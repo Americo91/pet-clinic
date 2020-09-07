@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by americo stoppello on 09/07/2020
@@ -35,21 +37,23 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
     public Owner save(Owner owner) {
         if (owner != null) {
             if (!CollectionUtils.isEmpty(owner.getPets())) {
-                owner.getPets().forEach(pet -> {
-                    //Take care of PetType id
-                    if (pet.getPetType() != null) {
-                        if (pet.getPetType().getId() == null) {
-                            pet.setPetType(petTypeService.save(pet.getPetType()));
-                        }
-                    } else {
-                        throw new RuntimeException("Pet Type is required");
-                    }
-                    //Take care of Pet id
-                    if (pet.getId() == null) {
-                        Pet savedPet = petService.save(pet);
-                        pet.setId(savedPet.getId());
-                    }
-                });
+                owner.getPets()
+                     .forEach(pet -> {
+                         //Take care of PetType id
+                         if (pet.getPetType() != null) {
+                             if (pet.getPetType()
+                                    .getId() == null) {
+                                 pet.setPetType(petTypeService.save(pet.getPetType()));
+                             }
+                         } else {
+                             throw new RuntimeException("Pet Type is required");
+                         }
+                         //Take care of Pet id
+                         if (pet.getId() == null) {
+                             Pet savedPet = petService.save(pet);
+                             pet.setId(savedPet.getId());
+                         }
+                     });
             }
             return super.save(owner);
         } else {
@@ -79,5 +83,13 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
                    .filter(owner -> lastName.equalsIgnoreCase(owner.getLastName()))
                    .findFirst()
                    .orElse(null);
+    }
+
+    @Override
+    public List<Owner> findAllByLastNameLike(String lastName) {
+        return this.findAll()
+                   .stream()
+                   .filter(owner -> lastName.equalsIgnoreCase(owner.getLastName()))
+                   .collect(Collectors.toList());
     }
 }
