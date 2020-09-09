@@ -3,6 +3,7 @@ package astoppello.springframework.petclinic.controllers;
 import astoppello.springframework.petclinic.model.Owner;
 import astoppello.springframework.petclinic.model.Pet;
 import astoppello.springframework.petclinic.model.Visit;
+import astoppello.springframework.petclinic.services.OwnerService;
 import astoppello.springframework.petclinic.services.PetService;
 import astoppello.springframework.petclinic.services.VisitService;
 import org.springframework.stereotype.Controller;
@@ -22,16 +23,22 @@ public class VisitController {
     public static final String VIEW_PETS_CREATE_OR_UPDATE_VISITOR_FORM = "pets/createOrUpdateVisitorForm";
     private final VisitService visitService;
     private final PetService petService;
+    private final OwnerService ownerService;
 
-    public VisitController(VisitService visitService,  PetService petService) {
+    public VisitController(VisitService visitService, PetService petService, OwnerService ownerService) {
         this.visitService = visitService;
         this.petService = petService;
+        this.ownerService = ownerService;
     }
 
     @InitBinder
     public void setAllowedFields(WebDataBinder webDataBinder) {
         webDataBinder.setDisallowedFields("id");
+    }
 
+    @ModelAttribute("owner")
+    public Owner findOwner(@PathVariable Long ownerId) {
+        return ownerService.findById(ownerId);
     }
 
     /**

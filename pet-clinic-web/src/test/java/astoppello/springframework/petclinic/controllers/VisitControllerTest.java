@@ -51,7 +51,7 @@ class VisitControllerTest {
     void initNewVisitForm() throws Exception {
         when(petService.findById(anyLong())).thenReturn(pet);
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        mockMvc.perform(get("/owners/1/pets/1/visit/new"))
+        mockMvc.perform(get("/owners/1/pets/1/visits/new"))
                .andExpect(status().isOk())
                .andExpect(model().attributeExists("visit"))
                .andExpect(view().name(VIEW_PETS_CREATE_OR_UPDATE_VISITOR_FORM));
@@ -62,7 +62,7 @@ class VisitControllerTest {
     void processNewVisitForm() throws Exception {
         when(petService.findById(anyLong())).thenReturn(pet);
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        mockMvc.perform(post("/owners/1/pets/1/visit/new"))
+        mockMvc.perform(post("/owners/1/pets/1/visits/new"))
                .andExpect(status().is3xxRedirection())
                .andExpect(view().name("redirect:/owners/1"));
         verify(visitService).save(any());
