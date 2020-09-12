@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -42,9 +43,14 @@ class VisitControllerTest {
 
     @BeforeEach
     void setUp() {
-        pet = Pet.builder().id(1l).build();
-        owner = Owner.builder().id(1l).build();
-        mockMvc = MockMvcBuilders.standaloneSetup(visitController).build();
+        pet = Pet.builder()
+                 .id(1l)
+                 .build();
+        owner = Owner.builder()
+                     .id(1l)
+                     .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(visitController)
+                                 .build();
     }
 
     @Test
@@ -62,7 +68,10 @@ class VisitControllerTest {
     void processNewVisitForm() throws Exception {
         when(petService.findById(anyLong())).thenReturn(pet);
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        mockMvc.perform(post("/owners/1/pets/1/visits/new"))
+        mockMvc.perform(post("/owners/1/pets/1/visits/new")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("date", "2018-11-11")
+                .param("description", "description"))
                .andExpect(status().is3xxRedirection())
                .andExpect(view().name("redirect:/owners/1"));
         verify(visitService).save(any());

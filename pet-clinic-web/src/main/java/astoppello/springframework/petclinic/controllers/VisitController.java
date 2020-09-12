@@ -13,6 +13,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 
 /**
  * Created by @author stopp on 09/09/2020
@@ -34,6 +36,12 @@ public class VisitController {
     @InitBinder
     public void setAllowedFields(WebDataBinder webDataBinder) {
         webDataBinder.setDisallowedFields("id");
+        webDataBinder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(LocalDate.parse(text));
+            }
+        });
     }
 
     @ModelAttribute("owner")
@@ -56,24 +64,25 @@ public class VisitController {
         Pet pet = petService.findById(petId);
         model.addAttribute("pet", pet);
         Visit visit = new Visit();
-        pet.getVisits().add(visit);
+        pet.getVisits()
+           .add(visit);
         visit.setPet(pet);
         return visit;
     }
 
 
     @GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String initNewVisitForm(@PathVariable("petId") Long petId, Model model, Owner owner){
+    public String initNewVisitForm(@PathVariable("petId") Long petId, Model model, Owner owner) {
         return VIEW_PETS_CREATE_OR_UPDATE_VISITOR_FORM;
     }
 
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result, Owner owner){
-        if (result.hasErrors()){
+    public String processNewVisitForm(@Valid Visit visit, BindingResult result, Owner owner) {
+        if (result.hasErrors()) {
             return VIEW_PETS_CREATE_OR_UPDATE_VISITOR_FORM;
         } else {
             visitService.save(visit);
-            return "redirect:/owners/"+owner.getId();
+            return "redirect:/owners/" + owner.getId();
         }
     }
 
